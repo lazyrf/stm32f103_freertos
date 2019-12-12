@@ -123,6 +123,7 @@ void PendSV_Handler(void)
   */
 void SysTick_Handler(void)
 {
+	delay_update();
 }
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/
