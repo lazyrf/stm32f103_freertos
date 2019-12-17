@@ -25,6 +25,7 @@ HARDWARE_DIR = $(TOP)/hardware
 LIB_DIR = $(TOP)/libs
 CMSIS_DIR = $(LIB_DIR)/stdlib/CMSIS
 STD_DIR = $(LIB_DIR)/stdlib/STM32F10x_StdPeriph_Driver
+RTOS_DIR = $(LIB_DIR)/freertos
 BUILD_DIR = $(TOP)/build
 OBJ_DIR = $(BUILD_DIR)/obj
 
@@ -42,20 +43,32 @@ VPATH := $(VPATH):$(CMSIS_DIR)/CM3/CoreSupport:$(CMSIS_DIR)/CM3/DeviceSupport/ST
 STD_SRC = $(wildcard $(STD_DIR)/src/*.c)
 VPATH := $(VPATH):$(STD_DIR)/src
 
+RTOS_SRC = $(RTOS_DIR)/croutine.c \
+	   $(RTOS_DIR)/event_groups.c \
+	   $(RTOS_DIR)/list.c \
+	   $(RTOS_DIR)/queue.c \
+	   $(RTOS_DIR)/tasks.c \
+	   $(RTOS_DIR)/timers.c \
+	   $(RTOS_DIR)/portable/GCC/ARM_CM3/port.c \
+	   $(RTOS_DIR)/portable/MemMang/heap_4.c
+VPATH := $(VPATH):$(RTOS_DIR):$(RTOS_DIR)/portable/GCC/ARM_CM3:$(RTOS_DIR)/portable/MemMang
+
 APP_SRC = $(wildcard $(APP_DIR)/*.c)
 VPATH := $(VPATH):$(APP_DIR)
 
 HARDWARE_SRC = $(wildcard $(HARDWARE_DIR)/*.c)
 VPATH := $(VPATH):$(HARDWARE_DIR)
 
-CSRC = $(CMSIS_SRC) $(STD_SRC) $(HARDWARE_SRC) $(APP_SRC)
+CSRC = $(CMSIS_SRC) $(STD_SRC) $(RTOS_SRC) $(HARDWARE_SRC) $(APP_SRC)
 
 INCLUDE = . \
 	  $(APP_DIR) \
 	  $(HARDWARE_DIR) \
 	  $(STD_DIR)/inc\
 	  $(CMSIS_DIR)/CM3/CoreSupport \
-	  $(CMSIS_DIR)/CM3/DeviceSupport/ST/STM32F10x
+	  $(CMSIS_DIR)/CM3/DeviceSupport/ST/STM32F10x \
+	  $(RTOS_DIR)/include \
+	  $(RTOS_DIR)/portable/GCC/ARM_CM3
 
 
 ###############################

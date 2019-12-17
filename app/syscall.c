@@ -121,6 +121,7 @@ caddr_t _sbrk(int incr)
 		heap_end = &end;
 
 	prev_heap_end = heap_end;
+#if 0
 	if (heap_end + incr > stack_ptr)
 	{
 //		write(1, "Heap and stack collision\n", 25);
@@ -128,7 +129,7 @@ caddr_t _sbrk(int incr)
 		errno = ENOMEM;
 		return (caddr_t) -1;
 	}
-
+#endif
 	heap_end += incr;
 
 	return (caddr_t) prev_heap_end;

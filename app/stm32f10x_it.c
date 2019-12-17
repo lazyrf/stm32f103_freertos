@@ -23,6 +23,11 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x_it.h"
+#include "FreeRTOS.h"
+#include "task.h"
+#include "delay.h"
+
+extern void xPortSysTickHandler(void);
 
 /******************************************************************************/
 /*            Cortex-M3 Processor Exceptions Handlers                         */
@@ -89,6 +94,7 @@ void UsageFault_Handler(void)
   }
 }
 
+#if 0
 /**
   * @brief  This function handles SVCall exception.
   * @param  None
@@ -97,6 +103,7 @@ void UsageFault_Handler(void)
 void SVC_Handler(void)
 {
 }
+#endif
 
 /**
   * @brief  This function handles Debug Monitor exception.
@@ -107,6 +114,7 @@ void DebugMon_Handler(void)
 {
 }
 
+#if 0
 /**
   * @brief  This function handles PendSV_Handler exception.
   * @param  None
@@ -115,6 +123,7 @@ void DebugMon_Handler(void)
 void PendSV_Handler(void)
 {
 }
+#endif
 
 /**
   * @brief  This function handles SysTick Handler.
@@ -123,6 +132,9 @@ void PendSV_Handler(void)
   */
 void SysTick_Handler(void)
 {
+	if (xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED) {
+		xPortSysTickHandler();
+	}
 	delay_update();
 }
 
